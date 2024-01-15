@@ -176,6 +176,10 @@ namespace LabAssignment_02
         }
 
         // - - - - - - EXERCISE - 03 - - - - - -
+        /// <summary>
+        /// This method takes a minimum and maximum index from the user and based on these indices, it creates a subset of
+        /// a list inputted by the user.
+        /// </summary>
         public void SlicingList()
         {
             try
@@ -184,22 +188,31 @@ namespace LabAssignment_02
                 Console.WriteLine("");
 
                 // Taking a number input from user
-                Console.WriteLine("Enter minimum index : ");
-                int minIndex;
+                int minIndex = 0;
+                bool isMinTrue = true;
 
-                while (!int.TryParse(Console.ReadLine(), out minIndex))
+                while (isMinTrue)
                 {
-                    Console.WriteLine("Invalid input! Please enter a valid number");
                     Console.WriteLine("Enter minimum index : ");
+                    if (!int.TryParse(Console.ReadLine(), out minIndex) || minIndex < 0)
+                    {
+                        Console.WriteLine("Invalid input! Please enter a valid number between 0 and max index.");
+                    }
+                    else
+                        isMinTrue = false;
                 }
 
-                Console.WriteLine("Enter maximum index : ");
-                int maxIndex;
+                int maxIndex = 0;
+                bool isMaxTrue = true;
 
-                while (!int.TryParse(Console.ReadLine(), out maxIndex))
+                while (isMaxTrue)
                 {
-                    Console.WriteLine("Invalid input! Please enter a valid number");
                     Console.WriteLine("Enter maximum index : ");
+
+                    if (!int.TryParse(Console.ReadLine(), out maxIndex) || maxIndex < 0)
+                        Console.WriteLine("Invalid input! Please enter a valid number between the range of min index and length of list");
+                    else
+                        isMaxTrue = false;
                 }
 
                 // Taking list as input from user
@@ -230,7 +243,7 @@ namespace LabAssignment_02
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); ;
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -315,40 +328,54 @@ namespace LabAssignment_02
         /// </summary>
         public void SequenceOfInputNumbers()
         {
-            Console.WriteLine("Enter a sequence of numbers separated by space and type 'done' at the end.");
-            string userString = Console.ReadLine().ToLower();
-            List<string> stringList = userString.Split(new string[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            List<int> inputNumberList = new List<int>();
-            bool invalidInput = false;
-
-            foreach (string str in stringList)
+            try
             {
-                if (str == "done") break;
+                bool continueExecution = true;
 
-                if (int.TryParse(str, out int inputNum))
+                while (continueExecution)
                 {
-                    inputNumberList.Add(inputNum);
-                }
-                else
-                {
-                    invalidInput = true;
-                    break;
+
+                    Console.WriteLine("Enter a sequence of numbers separated by space and type 'done' at the end.");
+                    string userString = Console.ReadLine().ToLower();
+                    List<string> stringList = userString.Split(new string[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                    List<int> inputNumberList = new List<int>();
+                    bool invalidInput = false;
+
+                    foreach (string str in stringList)
+                    {
+                        if (str == "done") break;
+
+                        if (int.TryParse(str, out int inputNum))
+                        {
+                            inputNumberList.Add(inputNum);
+                        }
+                        else
+                        {
+                            invalidInput = true;
+                            break;
+                        }
+                    }
+
+                    if (invalidInput)
+                    {
+                        Console.WriteLine("Invalid input! Please enter valid integers.");
+                    }
+                    else
+                    {
+                        continueExecution = false;
+                        // Displaying number of positive even and negative even numbers
+                        NoOfEvenNumbers(inputNumberList);
+                        // Displaying number of positive odd and negative odd numbers
+                        NoOfOddNumbers(inputNumberList);
+                        // Displaying number of zeroes
+                        NoOfZeroes(inputNumberList);
+                    }
                 }
             }
-
-            if (invalidInput)
+            catch (Exception ex)
             {
-                Console.WriteLine("Invalid input! Please enter valid integers.");
-            }
-            else
-            {
-                // Displaying number of positive even and negative even numbers
-                NoOfEvenNumbers(inputNumberList);
-                // Displaying number of positive odd and negative odd numbers
-                NoOfOddNumbers(inputNumberList);
-                // Displaying number of zeroes
-                NoOfZeroes(inputNumberList);
+                Console.WriteLine(ex.Message);
             }
         }
 
